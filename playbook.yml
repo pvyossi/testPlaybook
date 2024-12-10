@@ -6,6 +6,6 @@
         msg: "Hello World"
     - name: Create Directory
       file:
-        path: /playbookTest
+        path: /tmp/playbookTest
         state: directory
         mode: "0755"
