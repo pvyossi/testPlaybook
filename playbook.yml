@@ -5,10 +5,7 @@
       debug:
         msg: "Hello World"
     - name: Create Directory
-      become: true
       file:
         path: /playbookTest
         state: directory
-        owner: root
-        group: root
         mode: "0755"
