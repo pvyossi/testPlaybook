@@ -1,22 +1,14 @@
-- name: Run tasks on localhost inside minikube
-  hosts: test
+- name: AWX Test
+  hosts: ansible_server
   gather_facts: no
 
   tasks:
-    - name: Create a test file
+    - name: ファイル作成
       file:
         path: /tmp/ansible_test_file.txt
         state: touch
 
-    - name: Write a message to the test file
+    - name: ファイルに内容記述
       lineinfile:
         path: /tmp/ansible_test_file.txt
-        line: "This file was created by Ansible running on localhost in minikube!"
-
-    - name: Display the contents of the file
-      command: cat /tmp/ansible_test_file.txt
-      register: test_file_contents
-
-    - name: Show the file contents
-      debug:
-        msg: "{{ test_file_contents.stdout }}"
+        line: "こんにちは！"
