@@ -1,6 +1,5 @@
 - name: AWX Test
   hosts: ansible_server
-  gather_facts: no
 
   tasks:
     - name: ファイル作成
