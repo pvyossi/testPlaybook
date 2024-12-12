@@ -1,11 +1,23 @@
-- name: Test Playbook
+- name: Run tasks on localhost inside minikube
   hosts: localhost
+  connection: local
+  gather_facts: no
+
   tasks:
-    - name: Print Hello World
-      debug:
-        msg: "Hello World"
-    - name: Create Directory
+    - name: Create a test file
       file:
-        path: /tmp/playbookTest
-        state: directory
-        mode: "0755"
+        path: /tmp/ansible_test_file.txt
+        state: touch
+
+    - name: Write a message to the test file
+      lineinfile:
+        path: /tmp/ansible_test_file.txt
+        line: "This file was created by Ansible running on localhost in minikube!"
+
+    - name: Display the contents of the file
+      command: cat /tmp/ansible_test_file.txt
+      register: test_file_contents
+
+    - name: Show the file contents
+      debug:
+        msg: "{{ test_file_contents.stdout }}"
