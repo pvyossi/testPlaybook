@@ -1,6 +1,5 @@
 - name: Run tasks on localhost inside minikube
-  hosts: localhost
-  connection: local
+  hosts: test
   gather_facts: no
 
   tasks:
