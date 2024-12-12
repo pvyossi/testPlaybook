@@ -1,5 +1,5 @@
 - name: AWX Test
-  hosts: ansible_server
+  hosts: ansible_server_1
 
   tasks:
     - name: ファイル作成
