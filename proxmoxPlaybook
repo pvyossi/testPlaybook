@@ -1,0 +1,23 @@
+---
+- name: Manage Proxmox Virtual Machines
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create a new virtual machine
+      community.general.proxmox_kvm:
+        api_host: "{{ proxmox_api_url }}"
+        api_user: "{{ proxmox_api_user }}"
+        api_token_id: "{{ proxmox_api_token_id }}"
+        api_token_secret: "{{ proxmox_api_token_secret }}"
+        node: "omoikane"  # Proxmoxノード名
+        vmid: 100     # 仮想マシンID
+        name: "ansible-test-vm"
+        cores: 2
+        memory: 2048
+        storage: "local-lvm"
+        disk_size: "10G"
+        ostype: "l26"  # OSタイプ
+        iso: "local:iso/ubuntu-24.04.1-live-server-amd64.iso"  # ISOイメージ
+        net0: "model=virtio,bridge=vmbr0"
+        state: "present"
+      delegate_to: localhost
