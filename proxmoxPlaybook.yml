@@ -8,7 +8,7 @@
         url: "{{ proxmox_api_url }}/nodes/{{ proxmox_node }}/qemu"
         method: POST
         headers:
-          Authorization: "PVEAPIToken={{ proxmox_api_token_id }}={{ proxmox_api_token_secret }}"
+          Authorization: 'PVEAPIToken={{ proxmox_api_token_id }}={{ proxmox_api_token_secret }}'
         body:
           vmid: "{{ vmid }}"
           name: "{{ vm_name }}"
