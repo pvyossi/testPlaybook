@@ -21,6 +21,7 @@
           net0: "model=virtio,bridge=vmbr0"
         body_format: json
         status_code: 200, 400
+        validate_certs: no
       register: vm_creation_result
 
     - name: Debug VM creation result
