@@ -15,10 +15,8 @@
           cores: "{{ vm_cores }}"
           memory: "{{ vm_memory }}"
           disk: "{{ vm_disk_size }}"
-          storage: "{{ proxmox_storage }}"
           ostype: "l26"
           iso: "{{ proxmox_iso }}"
-          net0: "model=virtio,bridge=vmbr0"
         body_format: json
         status_code: 200, 400
         validate_certs: no
