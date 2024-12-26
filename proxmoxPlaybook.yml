@@ -1,23 +1,28 @@
 ---
-- name: Manage Proxmox Virtual Machines
-  hosts: all
+- name: Create a new VM on Proxmox via API
+  hosts: localhost
   gather_facts: no
   tasks:
-    - name: Create a new virtual machine
-      community.general.proxmox_kvm:
-        api_host: "{{ proxmox_api_url }}"
-        api_user: "{{ proxmox_api_user }}"
-        api_token_id: "{{ proxmox_api_token_id }}"
-        api_token_secret: "{{ proxmox_api_token_secret }}"
-        node: "proxmox"  # Proxmoxノード名
-        vmid: 101     # 仮想マシンID
-        name: "ansible-test-vm"
-        cores: 2
-        memory: 2048
-        storage: "local-lvm"
-        disk_size: "32G"
-        ostype: "l26"  # OSタイプ
-        iso: "local:iso/ubuntu-24.04.1-live-server-amd64.iso"  # ISOイメージ
-        net0: "model=virtio,bridge=vmbr0"
-        state: "present"
-      delegate_to: localhost
+    - name: Create a new VM via API
+      uri:
+        url: "{{ proxmox_api_url }}/nodes/{{ proxmox_node }}/qemu"
+        method: POST
+        headers:
+          Authorization: "PVEAPIToken={{ proxmox_api_token_id }}={{ proxmox_api_token_secret }}"
+        body:
+          vmid: 101                   # 仮想マシンID
+          name: "awx-test-vm"         # 仮想マシン名
+          cores: 2                    # CPUコア数
+          memory: 2048                # メモリ (MB)
+          disk: "10G"                 # ディスクサイズ
+          storage: "{{ proxmox_storage }}" # ストレージ名
+          ostype: "l26"               # OSタイプ (Linux)
+          iso: "{{ proxmox_iso }}"    # ISOイメージ
+          net0: "model=virtio,bridge=vmbr0" # ネットワーク設定
+        body_format: json
+        status_code: 200, 400
+      register: vm_creation_result
+
+    - name: Debug VM creation result
+      debug:
+        var: vm_creation_result.json
