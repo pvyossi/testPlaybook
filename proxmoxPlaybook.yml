@@ -1,28 +1,17 @@
 ---
-- name: Create a new VM on Proxmox
+- name: Execute curl to create VM on Proxmox
   hosts: localhost
-  gather_facts: no
   tasks:
-    - name: Create a new VM via API
-      uri:
-        url: "{{ proxmox_api_url }}/nodes/{{ proxmox_node }}/qemu"
-        method: POST
-        headers:
-          Authorization: 'PVEAPIToken={{ proxmox_api_token_id }}={{ proxmox_api_token_secret }}'
-        body:
-          vmid: "{{ vmid }}"
-          name: "{{ vm_name }}"
-          cores: "{{ vm_cores }}"
-          memory: "{{ vm_memory }}"
-          disk: "{{ vm_disk_size }}"
-          ostype: "l26"
-          iso: "{{ proxmox_iso }}"
-        body_format: json
-        status_code: 200, 400
-        validate_certs: no
-      register: vm_creation_result
-
-    - name: Debug VM creation result
-      debug:
-        var: vm_creation_result.json
+    - name: Execute curl command to create VM
+      ansible.builtin.shell: |
+        curl -k -X POST '{{ proxmox_url }}/api2/json/nodes/{{ node }}/qemu' \
+             -H 'Authorization: PVEAPIToken={{ token_name }}={{ token_secret }}' \
+             -d vmid={{ vmid }} \
+             -d name={{ vm_name }} \
+             -d cores={{ cores }} \
+             -d memory={{ memory }} \
+             -d cdrom={{ cdrom_path }} \
+             -d ostype={{ ostype }}
+      args:
+        executable: /bin/bash
 
