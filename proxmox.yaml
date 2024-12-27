@@ -1,0 +1,20 @@
+---
+- name: Execute curl to create VM on Proxmox
+  hosts: localhost
+  tasks:
+    - name: Create a new VM via API
+      uri:
+        url: "{{ proxmox_url }}/api2/json/nodes/{{ node }}/qemu"
+        method: POST
+        headers:
+          Authorization: "PVEAPIToken={{ token_name }}={{ token_secret }}"
+        body:
+          vmid: "{{ vmid }}"
+          name: "{{ vm_name }}"
+          cores: "{{ cores }}"
+          memory: "{{ memory }}"
+          cdrom: "{{ cdrom_path }}"
+          ostype: "{{ ostype }}"
+        body_format: json
+        status_code: 200, 400
+        validate_certs: no
